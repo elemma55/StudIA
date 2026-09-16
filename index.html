@@ -1,0 +1,383 @@
+<title>StudIA — Tutor de Estudio</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Playfair+Display:ital@1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap');
+
+  :root {
+    --bg: #0a0b10;
+    --bg-raised: #12141d;
+    --bg-raised-2: #171a24;
+    --border: #262a38;
+    --border-soft: #1a1d28;
+    --text: #eef0f6;
+    --text-dim: #939aad;
+    --text-faint: #565c6e;
+    --accent: #3ee8a8;
+    --accent-soft: #8ff2cb;
+    --accent-glow: rgba(62,232,168,0.22);
+    --warn: #ffb454;
+    --mono: 'JetBrains Mono', monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: 'Inter', -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  h1, h2, h3 { font-family: 'Space Grotesk', 'Inter', sans-serif; margin: 0; text-wrap: balance; }
+  em { font-family: 'Playfair Display', serif; font-style: italic; color: var(--accent-soft); font-weight: 400; }
+  p { margin: 0; }
+  a { color: inherit; text-decoration: none; }
+  ul { margin: 0; padding: 0; list-style: none; }
+
+  .wrap { max-width: 1140px; margin: 0 auto; padding: 0 32px; }
+
+  nav { position: sticky; top: 0; z-index: 50; background: rgba(10,11,16,0.82); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-soft); }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+  .logo { display: flex; align-items: center; gap: 9px; font-weight: 700; font-size: 19px; }
+  .logo-mark { width: 24px; height: 24px; border-radius: 8px; background: linear-gradient(135deg, var(--accent), #0e6b53); position: relative; }
+  .logo-mark::after { content: ''; position: absolute; inset: 6px; border-radius: 4px; background: var(--bg); }
+  .nav-links { display: flex; gap: 30px; font-size: 14.5px; color: var(--text-dim); }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta { display: flex; align-items: center; gap: 16px; font-size: 14.5px; }
+  .btn { padding: 10px 18px; border-radius: 10px; font-weight: 600; font-size: 14.5px; white-space: nowrap; }
+  .btn-solid { background: var(--accent); color: #06130e; box-shadow: 0 8px 24px -8px var(--accent-glow); }
+  .btn-solid:hover { background: var(--accent-soft); }
+  .btn-line { border: 1px solid var(--border); color: var(--text); }
+  .btn-line:hover { border-color: var(--accent); }
+  .btn-ghost { color: var(--text-dim); }
+  .btn-ghost:hover { color: var(--text); }
+
+  .hero { padding: 90px 0 40px; text-align: center; position: relative; }
+  .hero::before {
+    content: ''; position: absolute; top: -80px; left: 50%; transform: translateX(-50%);
+    width: 900px; height: 500px; background: radial-gradient(ellipse at 50% 0%, var(--accent-glow), transparent 65%);
+    pointer-events: none;
+  }
+  .eyebrow-pill {
+    display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--border); border-radius: 999px;
+    padding: 7px 16px; font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.06em; color: var(--accent-soft);
+    text-transform: uppercase; position: relative; z-index: 1;
+  }
+  .eyebrow-pill::before { content: '✦'; }
+  .hero h1 { font-size: 56px; line-height: 1.1; font-weight: 700; letter-spacing: -0.02em; margin-top: 26px; position: relative; z-index: 1; }
+  .hero h1 em { font-size: 56px; }
+  .hero-sub { max-width: 58ch; margin: 24px auto 0; font-size: 17.5px; line-height: 1.6; color: var(--text-dim); position: relative; z-index: 1; }
+  .hero-ctas { display: flex; justify-content: center; gap: 12px; margin-top: 34px; position: relative; z-index: 1; }
+  .btn-lg { padding: 13px 24px; font-size: 15px; border-radius: 11px; }
+  .hero-note { margin-top: 18px; font-size: 12.5px; color: var(--text-faint); position: relative; z-index: 1; }
+
+  /* APP MOCK — dashboard */
+  .mock-stage { margin-top: 60px; display: flex; justify-content: center; }
+  .app-mock {
+    width: 400px; border-radius: 22px; border: 1px solid var(--border);
+    background: linear-gradient(180deg, var(--bg-raised), var(--bg-raised-2));
+    box-shadow: 0 60px 100px -50px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.02);
+    overflow: hidden; text-align: left;
+  }
+  .app-top { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px 0; font-size: 12.5px; color: var(--text-faint); }
+  .app-body { padding: 22px 22px 8px; display: flex; flex-direction: column; gap: 14px; }
+  .exam-banner { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: 14px; border: 1px solid var(--border); background: var(--bg-raised-2); }
+  .exam-ring { width: 44px; height: 44px; border-radius: 50%; background: conic-gradient(var(--accent) 0 68%, var(--border) 68% 100%); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .exam-ring span { width: 32px; height: 32px; border-radius: 50%; background: var(--bg-raised-2); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 10.5px; color: var(--accent-soft); }
+  .exam-banner .t { font-size: 13.5px; font-weight: 600; }
+  .exam-banner .m { font-size: 11.5px; color: var(--text-faint); margin-top: 2px; }
+  .review-card {
+    border-radius: 16px; border: 1px solid var(--border);
+    background: linear-gradient(155deg, rgba(62,232,168,0.14), var(--bg-raised-2));
+    padding: 18px 18px 16px; display: flex; flex-direction: column; gap: 8px;
+  }
+  .review-card .tag { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent-soft); }
+  .review-card .t { font-size: 16px; font-weight: 600; }
+  .review-card .m { font-size: 12px; color: var(--text-faint); }
+  .weak-list { display: flex; flex-direction: column; gap: 8px; }
+  .weak-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-radius: 11px; background: var(--bg-raised-2); border: 1px solid var(--border-soft); font-size: 12.5px; }
+  .weak-item .t { font-weight: 600; }
+  .weak-item .bar { width: 56px; height: 5px; border-radius: 3px; background: var(--border); overflow: hidden; margin-top: 5px; }
+  .weak-item .bar span { display: block; height: 100%; background: var(--warn); }
+  .tab-bar { display: flex; border-top: 1px solid var(--border-soft); margin-top: 6px; }
+  .tab-bar div { flex: 1; text-align: center; padding: 13px 0 15px; font-size: 11px; color: var(--text-faint); }
+  .tab-bar div.active { color: var(--accent-soft); }
+
+  section { padding: 96px 0; }
+  .divider { border-top: 1px solid var(--border-soft); }
+  .section-head { text-align: center; max-width: 660px; margin: 0 auto 56px; }
+  .section-head.left { text-align: left; margin: 0 0 44px; }
+  .eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-soft); }
+  .section-head h2 { font-size: 36px; font-weight: 700; letter-spacing: -0.02em; margin-top: 14px; }
+  .section-head h2 em { font-size: 36px; }
+  .section-head p.desc { margin-top: 14px; font-size: 15.5px; color: var(--text-dim); line-height: 1.6; }
+
+  .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .feature {
+    background: var(--bg-raised); border: 1px solid var(--border-soft); border-radius: 16px; padding: 28px 26px;
+    display: flex; flex-direction: column; gap: 12px; min-height: 150px;
+  }
+  .feature .glyph { font-size: 20px; }
+  .feature h3 { font-size: 16px; font-weight: 600; }
+  .feature p { font-size: 13.5px; color: var(--text-dim); line-height: 1.55; }
+
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .step { padding: 26px 6px 0; border-top: 1px solid var(--border); }
+  .step .num { font-family: var(--mono); font-size: 13px; color: var(--accent-soft); }
+  .step h3 { font-size: 16.5px; font-weight: 600; margin-top: 12px; }
+  .step p { font-size: 13.5px; color: var(--text-dim); margin-top: 8px; line-height: 1.55; }
+
+  /* PROFILE split section */
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+  .profile-list { display: flex; flex-direction: column; gap: 14px; margin-top: 24px; }
+  .profile-item { display: flex; gap: 12px; }
+  .profile-item .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); margin-top: 8px; flex-shrink: 0; }
+  .profile-item .t { font-size: 14.5px; font-weight: 600; }
+  .profile-item .m { font-size: 13px; color: var(--text-dim); margin-top: 3px; line-height: 1.5; }
+
+  .form-mock { border: 1px solid var(--border); border-radius: 18px; background: var(--bg-raised); overflow: hidden; }
+  .form-mock-top { padding: 16px 20px; border-bottom: 1px solid var(--border-soft); font-size: 13px; font-weight: 600; }
+  .form-mock-body { padding: 18px 20px 22px; display: flex; flex-direction: column; gap: 14px; }
+  .field-label { font-size: 11px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.05em; }
+  .field-value { margin-top: 6px; padding: 10px 13px; border-radius: 9px; border: 1px solid var(--border-soft); background: var(--bg-raised-2); font-size: 13.5px; display: flex; justify-content: space-between; align-items: center; }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .chip-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .chip { font-size: 12px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--border-soft); color: var(--text-dim); }
+  .chip.on { border-color: var(--accent); color: var(--accent-soft); background: rgba(62,232,168,0.08); }
+
+  /* MATERIALS */
+  .material-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+  .material-item { border: 1px solid var(--border-soft); border-radius: 14px; padding: 20px 14px; text-align: center; background: var(--bg-raised); }
+  .material-item .ico { font-size: 22px; }
+  .material-item .lbl { font-size: 12.5px; color: var(--text-dim); margin-top: 10px; line-height: 1.4; }
+
+  /* STAGES */
+  .stage-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .stage-card { border: 1px solid var(--border-soft); border-radius: 16px; padding: 26px; background: var(--bg-raised); }
+  .stage-card .lvl { font-family: var(--mono); font-size: 11px; color: var(--accent-soft); text-transform: uppercase; letter-spacing: 0.06em; }
+  .stage-card h3 { font-size: 18px; font-weight: 600; margin-top: 10px; }
+  .stage-card p { font-size: 13.5px; color: var(--text-dim); margin-top: 10px; line-height: 1.55; }
+
+  /* PRICING */
+  .price-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; max-width: 720px; margin: 0 auto; }
+  .price-card { border: 1px solid var(--border-soft); border-radius: 18px; padding: 30px; background: var(--bg-raised); display: flex; flex-direction: column; gap: 18px; }
+  .price-card.pro { border-color: var(--accent); background: linear-gradient(155deg, rgba(62,232,168,0.08), var(--bg-raised)); }
+  .price-card .name { font-size: 15px; font-weight: 600; color: var(--text-dim); }
+  .price-card .amount { font-family: 'Space Grotesk'; font-size: 34px; font-weight: 700; }
+  .price-card .amount span { font-size: 14px; color: var(--text-faint); font-weight: 500; }
+  .price-card ul { display: flex; flex-direction: column; gap: 10px; font-size: 13.5px; color: var(--text-dim); }
+  .price-card li::before { content: '✓ '; color: var(--accent); }
+  .flag { display: inline-block; font-family: var(--mono); font-size: 10.5px; color: var(--warn); border: 1px solid rgba(255,180,84,0.35); background: rgba(255,180,84,0.08); padding: 2px 8px; border-radius: 6px; margin-left: 8px; letter-spacing: 0.03em; vertical-align: middle; }
+
+  .cta-band { text-align: center; padding: 100px 0 110px; position: relative; }
+  .cta-band::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 50% 90% at 50% 40%, var(--accent-glow), transparent 70%); pointer-events: none; }
+  .cta-band h2 { font-size: 40px; font-weight: 700; letter-spacing: -0.02em; position: relative; }
+  .cta-band .sub { margin-top: 16px; color: var(--text-dim); font-size: 15.5px; position: relative; }
+  .cta-actions { display: flex; justify-content: center; gap: 12px; margin-top: 32px; position: relative; }
+
+  footer { border-top: 1px solid var(--border-soft); padding: 32px 0; }
+  .footer-row { display: flex; justify-content: center; font-size: 13px; color: var(--text-faint); text-align: center; }
+
+  @media (max-width: 900px) {
+    .feature-grid, .steps, .split, .material-grid, .stage-grid, .price-grid { grid-template-columns: 1fr; }
+    .material-grid { grid-template-columns: repeat(2, 1fr); }
+    .nav-links { display: none; }
+    .hero h1, .hero h1 em { font-size: 34px; }
+    .section-head h2, .section-head h2 em { font-size: 26px; }
+    .wrap { padding: 0 20px; }
+  }
+</style>
+
+<nav>
+  <div class="wrap nav-inner">
+    <div class="logo"><span class="logo-mark"></span>StudIA</div>
+    <div class="nav-links">
+      <a href="#funcionalidades">Funcionalidades</a>
+      <a href="#como-funciona">Cómo funciona</a>
+      <a href="#materiales">Materiales</a>
+      <a href="#precios">Precios</a>
+    </div>
+    <div class="nav-cta">
+      <a class="btn btn-ghost" href="#">Iniciar sesión</a>
+      <a class="btn btn-solid" href="#">Comenzar gratis</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow-pill">Tutor de estudio con IA</span>
+    <h1>Convierte tu temario en <em>un plan</em><br>que sí llegas a cumplir.</h1>
+    <p class="hero-sub">Sube el syllabus de tu materia, tus PDFs, fotos de apuntes o del pizarrón. StudIA organiza el contenido y te prepara resúmenes, cheat sheets, quizzes y exámenes simulados — con repasos de 5 a 10 minutos, justo a tiempo para tu próximo parcial o final.</p>
+    <div class="hero-ctas">
+      <a class="btn btn-lg btn-solid" href="#">Comenzar gratis</a>
+      <a class="btn btn-lg btn-line" href="#como-funciona">Ver cómo funciona</a>
+    </div>
+    <p class="hero-note">Para secundaria, prepa/bachillerato y universidad · sin tarjeta para empezar <span class="flag">REVISAR</span></p>
+
+    <div class="mock-stage">
+      <div class="app-mock">
+        <div class="app-top"><span>9:41</span><span>●●●</span></div>
+        <div class="app-body">
+          <div class="exam-banner">
+            <div class="exam-ring"><span>68%</span></div>
+            <div><div class="t">Cálculo II — Parcial 2</div><div class="m">Examen en 6 días · plan activo</div></div>
+          </div>
+          <div class="review-card">
+            <span class="tag">Repaso de hoy · 7 min</span>
+            <div class="t">Regla de la cadena</div>
+            <div class="m">Basado en tu último quiz: 3 de 5 correctas</div>
+          </div>
+          <div class="weak-list">
+            <div class="weak-item"><div><div class="t">Integrales por partes</div><div class="bar"><span style="width:35%"></span></div></div><span>reforzar</span></div>
+            <div class="weak-item"><div><div class="t">Derivadas implícitas</div><div class="bar"><span style="width:80%"></span></div></div><span>listo</span></div>
+          </div>
+        </div>
+        <div class="tab-bar">
+          <div>Materias</div><div class="active">Repasar</div><div>Exámenes</div><div>Perfil</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="divider" id="funcionalidades">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Qué hace</span>
+      <h2>De tu temario a <em>un examen listo.</em></h2>
+    </div>
+    <div class="feature-grid">
+      <div class="feature"><span class="glyph">📋</span><h3>Carga tu temario o syllabus</h3><p>StudIA lee el programa de la materia y organiza los temas en el orden en que los vas a necesitar.</p></div>
+      <div class="feature"><span class="glyph">📎</span><h3>Sube cualquier material</h3><p>PDFs, fotos de tus apuntes o del pizarrón, sitios web de referencia — todo se integra al temario de la materia.</p></div>
+      <div class="feature"><span class="glyph">📝</span><h3>Resúmenes y cheat sheets</h3><p>Genera resúmenes por tema y hojas de repaso concentradas, listas para los días antes del examen.</p></div>
+      <div class="feature"><span class="glyph">✅</span><h3>Quizzes y exámenes simulados</h3><p>Practica con preguntas al estilo del examen real y recibe retroalimentación inmediata en cada una.</p></div>
+      <div class="feature"><span class="glyph">🎯</span><h3>Repasos de 5 a 10 minutos</h3><p>Con base en tu desempeño, StudIA elige qué tema reforzar hoy y te lo entrega en sesiones cortas.</p></div>
+      <div class="feature"><span class="glyph">📅</span><h3>Plan rumbo al examen</h3><p>Registra la fecha de tu parcial o final y recibe un plan de estudio concreto, día por día, para llegar preparado.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="divider" id="como-funciona">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Cómo funciona</span>
+      <h2>Un flujo pensado <em>para el semestre.</em></h2>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="num">01</div><h3>Registra tu materia</h3><p>Nombre, temario, fechas de inicio y fin del curso, y las fechas de tus quizzes y exámenes.</p></div>
+      <div class="step"><div class="num">02</div><h3>Sube tus materiales</h3><p>PDFs, fotos de apuntes o pizarrón, sitios de referencia y hasta exámenes ya resueltos para corregir.</p></div>
+      <div class="step"><div class="num">03</div><h3>Estudia con lo que genera StudIA</h3><p>Resúmenes, cheat sheets, quizzes y exámenes simulados listos por tema.</p></div>
+      <div class="step"><div class="num">04</div><h3>Seguí tu plan de repaso</h3><p>Sesiones cortas y personalizadas según tus resultados, todo registrado en tu progreso.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="divider">
+  <div class="wrap split">
+    <div>
+      <div class="section-head left">
+        <span class="eyebrow">Tu cuenta</span>
+        <h2>Un perfil que se ajusta<br>a <em>cómo estudias.</em></h2>
+        <p class="desc">Tu progreso, tus materias y tu ritmo se registran en un solo lugar — y cambian contigo a lo largo del ciclo escolar.</p>
+      </div>
+      <div class="profile-list">
+        <div class="profile-item"><span class="dot"></span><div><div class="t">Registro con email y contraseña</div><div class="m">Cambia tu contraseña cuando quieras desde tu perfil.</div></div></div>
+        <div class="profile-item"><span class="dot"></span><div><div class="t">Edad, grado y sistema educativo</div><div class="m">Presencial, en línea o a distancia — StudIA ajusta el ritmo de repaso según tu modalidad.</div></div></div>
+        <div class="profile-item"><span class="dot"></span><div><div class="t">Materias en curso</div><div class="m">Agrégalas, ponlas en pausa o cancélalas en cualquier momento del ciclo.</div></div></div>
+        <div class="profile-item"><span class="dot"></span><div><div class="t">Fechas clave de cada materia</div><div class="m">Inicio y fin de curso, quizzes y exámenes — para que el plan de repaso siempre esté a tiempo.</div></div></div>
+      </div>
+    </div>
+    <div class="form-mock">
+      <div class="form-mock-top">Perfil del estudiante</div>
+      <div class="form-mock-body">
+        <div class="field-row">
+          <div><div class="field-label">Grado escolar</div><div class="field-value">3.º semestre <span>▾</span></div></div>
+          <div><div class="field-label">Edad</div><div class="field-value">17 años <span>▾</span></div></div>
+        </div>
+        <div>
+          <div class="field-label">Sistema educativo</div>
+          <div class="chip-row" style="margin-top:6px">
+            <span class="chip on">Presencial</span><span class="chip">En línea</span><span class="chip">A distancia</span>
+          </div>
+        </div>
+        <div>
+          <div class="field-label">Materias activas</div>
+          <div class="field-value" style="margin-top:6px">Cálculo II <span style="color:var(--accent-soft)">activa</span></div>
+          <div class="field-value" style="margin-top:6px">Historia Universal <span style="color:var(--text-faint)">en pausa</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="divider" id="materiales">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Materiales</span>
+      <h2>Cualquier fuente, <em>un mismo temario.</em></h2>
+    </div>
+    <div class="material-grid">
+      <div class="material-item"><div class="ico">📄</div><div class="lbl">PDFs del curso</div></div>
+      <div class="material-item"><div class="ico">🖼️</div><div class="lbl">Imágenes de referencia</div></div>
+      <div class="material-item"><div class="ico">📸</div><div class="lbl">Fotos de apuntes o pizarrón</div></div>
+      <div class="material-item"><div class="ico">🔗</div><div class="lbl">Sitios web de referencia</div></div>
+      <div class="material-item"><div class="ico">🧾</div><div class="lbl">Exámenes resueltos, para corregir</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="divider">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Para cada etapa</span>
+      <h2>Crece <em>contigo,</em> del salón a la carrera.</h2>
+    </div>
+    <div class="stage-grid">
+      <div class="stage-card"><div class="lvl">Secundaria</div><h3>Hábito de estudio</h3><p>Repasos cortos y frecuentes para construir el hábito de estudiar un poco cada día, no todo la noche anterior.</p></div>
+      <div class="stage-card"><div class="lvl">Prepa / Bachillerato</div><h3>Varias materias a la vez</h3><p>Organiza el temario de cada materia por separado y prioriza el repaso según qué examen tienes más cerca.</p></div>
+      <div class="stage-card"><div class="lvl">Universidad</div><h3>Contenido denso, tiempo limitado</h3><p>Convierte lecturas largas y notas de clase en cheat sheets y simulacros pensados para parciales y finales.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="divider" id="precios">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Precios <span class="flag">REVISAR</span></span>
+      <h2>Empieza gratis, <em>crece si lo necesitas.</em></h2>
+      <p class="desc">Planes propuestos a modo de referencia — pendientes de definir con el equipo.</p>
+    </div>
+    <div class="price-grid">
+      <div class="price-card">
+        <div><div class="name">Gratis</div><div class="amount">$0<span>/mes</span></div></div>
+        <ul>
+          <li>1 materia activa</li>
+          <li>Resúmenes y cheat sheets ilimitados</li>
+          <li>Repasos diarios de 5–10 min</li>
+        </ul>
+      </div>
+      <div class="price-card pro">
+        <div><div class="name">Plus</div><div class="amount">$79<span>MXN/mes</span></div></div>
+        <ul>
+          <li>Materias ilimitadas</li>
+          <li>Exámenes simulados ilimitados</li>
+          <li>Corrección de exámenes resueltos</li>
+          <li>Plan de estudio previo a fechas clave</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band divider">
+  <div class="wrap">
+    <h2>Llega al examen <em>preparado.</em></h2>
+    <p class="sub">Registra tu primera materia y recibe tu primer repaso de hoy mismo.</p>
+    <div class="cta-actions">
+      <a class="btn btn-lg btn-solid" href="#">Comenzar gratis</a>
+      <a class="btn btn-lg btn-line" href="#">Iniciar sesión</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-row">StudIA — tutor de estudio con IA. Página de referencia, contenido de producto en definición.</div>
+</footer>
