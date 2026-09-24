@@ -1,3 +1,5 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>StudIA — Tutor de Estudio</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Playfair+Display:ital@1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap');
@@ -18,7 +20,7 @@
     --mono: 'JetBrains Mono', monospace;
   }
   * { box-sizing: border-box; }
-  html, body { margin: 0; }
+  html, body { margin: 0; overflow-x: hidden; }
   body {
     background: var(--bg); color: var(--text);
     font-family: 'Inter', -apple-system, sans-serif;
@@ -182,6 +184,31 @@
     .hero h1, .hero h1 em { font-size: 34px; }
     .section-head h2, .section-head h2 em { font-size: 26px; }
     .wrap { padding: 0 20px; }
+    .app-mock { width: 100%; max-width: 400px; }
+    .hero::before { width: 100%; }
+    section { padding: 64px 0; }
+    .hero { padding: 60px 0 24px; }
+    .section-head { margin-bottom: 36px; }
+    .steps { gap: 0; }
+    .step { padding: 20px 6px 20px; border-top: 1px solid var(--border); border-bottom: none; }
+  }
+
+  @media (max-width: 480px) {
+    .nav-cta .btn-ghost { display: none; }
+    .nav-cta .btn { padding: 8px 14px; font-size: 13.5px; }
+    .hero-ctas { flex-direction: column; align-items: stretch; }
+    .cta-actions { flex-direction: column; align-items: stretch; }
+    .wrap { padding: 0 16px; }
+    .hero h1, .hero h1 em { font-size: 30px; }
+    .hero-sub { font-size: 15.5px; }
+    .cta-band h2 { font-size: 28px; }
+    .price-card { padding: 22px 18px; }
+    .section-head h2, .section-head h2 em { font-size: 24px; }
+    .feature { padding: 20px 18px; }
+    .stage-card { padding: 20px 18px; }
+    .form-mock-body { padding: 14px 14px 18px; }
+    .field-row { grid-template-columns: 1fr; }
+    .chip-row { gap: 6px; }
   }
 </style>
 
